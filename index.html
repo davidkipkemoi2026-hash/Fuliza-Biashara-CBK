@@ -1244,17 +1244,20 @@ document.getElementById('payBtn').onclick = async () => {
     showToast('Enter phone number');
     return;
   }
-
+if (!selected || (!selected.fee && !selected.amount)) {
+  showToast('Please select a package');
+  return;
+  }
   hideOverlay('reviewOverlay');
   showOverlay('loadingOverlay');
 
   try {
-    const res = await fetch('https://YOUR-BACKEND-URL/stk-push', {
+    const res = await fetch('https://new-mpesabackend.onrender.com/pay', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         phone: phone,
-        amount: selected.amount
+        amount: Number(selected?.fee || selected?.amount || 0)
       })
     });
 
